@@ -1,0 +1,10 @@
+{
+   "version": 2,
+   "name": "Blog-test",
+   "builds": [
+      { "src": "app.js", "use": "@vercel/node" }
+   ],
+   "routes": [
+      { "src": "/(.*)", "dest": "/app.js" }
+   ]
+}
