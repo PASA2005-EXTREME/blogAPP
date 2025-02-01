@@ -30,7 +30,8 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/blogs')
+        const response = await axios.get('https://render-blog-s9eo.vercel.app/api/blogs
+')
         setBlogs(response.data)
         setLoading(false)
       } catch (error) {
@@ -66,14 +67,16 @@ export default function BlogPage() {
       if (editingBlog) {
         // Update existing blog
         const response = await 
-        axios.put(`http://localhost:3000/api/blogs/${editingBlog._id}`, data)
+        axios.put(`https://render-blog-s9eo.vercel.app/api/blogs
+/${editingBlog._id}`, data)
         setBlogs(blogs.map(blog => 
           blog._id === editingBlog._id ? response.data : blog
         ));
         setEditingBlog(null);
       } else {
         // Create new blog
-        const response = await axios.post('http://localhost:3000/api/blogs', {
+        const response = await axios.post('https://render-blog-s9eo.vercel.app/api/blogs
+', {
           ...data,
           createdAt: new Date().toISOString()
         });
@@ -103,7 +106,8 @@ export default function BlogPage() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/api/blogs/${id}`)
+      await axios.delete(`https://render-blog-s9eo.vercel.app/api/blogs
+/${id}`)
       setBlogs(blogs.filter(blog => blog._id !== id))
     } catch (error) {
       console.error('Error deleting blog:', error)
