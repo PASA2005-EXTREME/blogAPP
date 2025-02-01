@@ -8,16 +8,14 @@ const cors = require('cors');
 const app = express();
 app.use(express.json());
 
+// configure cors middleware - ye requests allow karega from frontend server 
 app.use(cors({
-  origin: 'https://render-test3-j8au.onrender.com',
+  origin: 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// for testing
-app.get('/', (req, res) => {
-  res.json({ status: 'Backend is running' });
-});
+// route to fetch all blogs from database 
 app.get('/api/blogs', async (req, res) => {
   try {
     console.log('Mongoose Connection State:', mongoose.connection.readyState);
@@ -34,8 +32,9 @@ app.get('/api/blogs', async (req, res) => {
       stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
-});
+});  // basic explanation for this route is that it sends a request to the database to fetch and returns it in the json format , then the blogs are sorted in newsest first 
 
+// route to create a new blog post 
 app.post('/api/blogs', async (req, res) => {
   try {
     // Validate request body
@@ -108,12 +107,51 @@ app.delete('/api/blogs/:id', async (req, res) => {
   }
 });
 
-// Start server with enhanced error handling
+
+// PUT /api/blogs/:id - Update existing blog
+app.put('/api/blogs/:id', async (req, res) => {
+  console.log('Update request received:', req.params.id, req.body);
+  try {
+    const { id } = req.params;
+    const { title, content, author } = req.body;
+
+    // Validate ID format
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'Invalid blog ID format' });
+    }
+
+    // Validate required fields
+    if (!title || !content || !author) {
+      return res.status(400).json({ message: 'Title, content, and author are required' });
+    }
+
+    // Update blog post
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      id,
+      { title, content, author },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedBlog) {
+      return res.status(404).json({ message: 'Blog not found' });
+    }
+
+    res.json(updatedBlog);
+  } catch (error) {
+    console.error('Failed to update blog:', error);
+    res.status(500).json({
+      message: 'Failed to update blog',
+      error: error.message
+    });
+  }
+});
+
+// Start server 
 const start = async () => {
   try {
     await connectDB();
     app.listen(process.env.PORT, () => {
-      console.log(`Server running on port ${process.env.PORT} || 3000`);
+      console.log(`Server running on port ${process.env.PORT} `);
     });
   } catch (error) {
     console.error('Failed to start server:', error);
