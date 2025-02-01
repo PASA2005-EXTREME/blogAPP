@@ -14,6 +14,11 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+// message that u should see when u have deployed your backend 
+app.get('/', (req, res) => {
+  res.send('Blog API is running successfully on Vercel!');
+});
+
 
 // route to fetch all blogs from database 
 app.get('/api/blogs', async (req, res) => {
