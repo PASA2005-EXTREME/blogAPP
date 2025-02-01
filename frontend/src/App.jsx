@@ -74,8 +74,7 @@ export default function BlogPage() {
         setEditingBlog(null);
       } else {
         // Create new blog
-        const response = await axios.post('https://render-blog-s9eo.vercel.app/api/blogs
-', {
+        const response = await axios.post('https://render-blog-s9eo.vercel.app/api/blogs'), {
           ...data,
           createdAt: new Date().toISOString()
         });
