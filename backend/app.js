@@ -10,10 +10,11 @@ app.use(express.json());
 
 // configure cors middleware - ye requests allow karega from frontend server 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://blog-final-no8y.onrender.com',  // Update to your Render frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 // message that u should see when u have deployed your backend 
 app.get('/', (req, res) => {
   res.send('Blog API is running successfully on Vercel!');
