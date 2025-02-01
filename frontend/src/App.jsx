@@ -30,8 +30,7 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get('https://render-blog-s9eo.vercel.app/api/blogs
-')
+        const response = await axios.get('https://render-blog-s9eo.vercel.app/api/blogs')
         setBlogs(response.data)
         setLoading(false)
       } catch (error) {
