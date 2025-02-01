@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: 'https://render-test2-mg8o.onrender.com/api',
 })
 
 export const getBlogs = async () => (await api.get('/blogs')).data
