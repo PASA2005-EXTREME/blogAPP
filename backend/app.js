@@ -14,7 +14,10 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-
+// for testing
+app.get('/', (req, res) => {
+  res.json({ status: 'Backend is running' });
+});
 app.get('/api/blogs', async (req, res) => {
   try {
     console.log('Mongoose Connection State:', mongoose.connection.readyState);
