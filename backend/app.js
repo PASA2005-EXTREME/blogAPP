@@ -10,7 +10,7 @@ app.use(express.json());
 
 // configure cors middleware - ye requests allow karega from frontend server 
 app.use(cors({
-  origin: 'https://blog-final-no8y.onrender.com',  // Update to your Render frontend URL
+  origin: '*',  // Update to your Render frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
