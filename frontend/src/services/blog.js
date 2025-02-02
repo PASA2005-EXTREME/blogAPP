@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://render-blog-s9eo.vercel.app/api/blogs'
+  baseURL: 'https://render-blog-f5lu.vercel.app/api/blogs'
 })
 
 export const getBlogs = async () => (await api.get('/blogs')).data
