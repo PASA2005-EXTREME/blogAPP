@@ -1,9 +1,12 @@
-import axios from 'axios'
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: 'https://render-blog-f5lu.vercel.app/api/blogs'
-})
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
+});
 
-export const getBlogs = async () => (await api.get('/blogs')).data
-export const createBlog = async (data) => (await api.post('/blogs', data)).data
-export const deleteBlog = async (id) => await api.delete(`/blogs/${id}`)
+export const getBlogs = async () => (await api.get("/api/blogs")).data;
+export const createBlog = async (data) =>
+  (await api.post("/api/blogs", data)).data;
+export const updateBlog = async (id, data) =>
+  (await api.put(`/api/blogs/${id}`, data)).data;
+export const deleteBlog = async (id) => api.delete(`/api/blogs/${id}`);

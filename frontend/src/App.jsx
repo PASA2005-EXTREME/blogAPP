@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import axios from 'axios'
 import { Textarea } from './components/ui/textarea'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -9,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Trash2 } from 'lucide-react'
 import RichTextEditor from './blog/RichTextEditor'
 import RainEffect from '@/components/ui/RainEffect'
+import { createBlog, deleteBlog, getBlogs, updateBlog } from './services/blog'
 
 import './App.css'
 
@@ -30,8 +30,8 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get('https://render-blog-f5lu.vercel.app/api/blogs')
-        setBlogs(response.data)
+        const blogs = await getBlogs()
+        setBlogs(blogs)
         setLoading(false)
       } catch (error) {
         console.error('Error fetching blogs:', error)
@@ -65,20 +65,18 @@ export default function BlogPage() {
       setIsSubmitting(true);
       if (editingBlog) {
         // Update existing blog
-        const response = await 
-        axios.put(`https://render-blog-f5lu.vercel.app/api/blogs
-/${editingBlog._id}`, data)
+        const updatedBlog = await updateBlog(editingBlog._id, data)
         setBlogs(blogs.map(blog => 
-          blog._id === editingBlog._id ? response.data : blog
+          blog._id === editingBlog._id ? updatedBlog : blog
         ));
         setEditingBlog(null);
       } else {
         // Create new blog
-        const response = await axios.post('https://render-blog-f5lu.vercel.app/api/blogs', {
+        const newBlog = await createBlog({
           ...data,
           createdAt: new Date().toISOString()
         });
-        setBlogs([response.data, ...blogs]);
+        setBlogs([newBlog, ...blogs]);
       }
       reset();
       setIsSidebarOpen(false); // Close sidebar on mobile after submission
@@ -104,8 +102,7 @@ export default function BlogPage() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://render-blog-f5lu.vercel.app/api/blogs
-/${id}`)
+      await deleteBlog(id)
       setBlogs(blogs.filter(blog => blog._id !== id))
     } catch (error) {
       console.error('Error deleting blog:', error)
